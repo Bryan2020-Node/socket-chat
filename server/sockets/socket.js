@@ -27,10 +27,12 @@ io.on('connection', (client) => {
         callback(usuarios.getPersonasPorSala(data.sala));
     });
 
-    client.on('crearMensaje', (data) => {
+    client.on('crearMensaje', (data, callback) => {
         let persona = usuarios.getPersona(client.id);
         let mensaje = crearMensaje(persona.nombre, data.mensaje);
         client.broadcast.emit('crearMensaje', mensaje);
+        // client.broadcast.to(persona.sala).emit('crearMensaje', crearMensaje('Administrador', `${persona.nombre} se unio al chat`));
+        callback(mensaje);
     });
 
     client.on('disconnect', () => {
